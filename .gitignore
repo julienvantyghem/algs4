@@ -1,5 +1,10 @@
+#Exclude Eclipse project & output files
 bin
-lib
 .classpath
 .project
 .settings/
+
+#Exclude IntelliJ project & output files
+*.iml
+.idea
+out
