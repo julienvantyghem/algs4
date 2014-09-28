@@ -2,14 +2,14 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-public class MergesortTest {
+public class SortTest {
 	
-	Sort sort = new BottomupMergesort();
+	Sort<Integer> sort = new TopDownMergesort<>();
 
 	@Test
 	public void testSort() {
 		for(int i = 1; i <= 20; i++){
-			Integer[] array = generateRandomArray(3);
+			Integer[] array = generateRandomArray(i);
 			sort.sortArray(array);
 			checkArrayOrdered(array);	
 		}

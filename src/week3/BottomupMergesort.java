@@ -1,10 +1,10 @@
 import java.util.Arrays;
 
-public class BottomupMergesort implements Sort {
+public class BottomupMergesort<Item extends Comparable<Item>> implements Sort<Item> {
 
 	private int mergeCallCount;
 
-	private void merge(Comparable[] a, Comparable[] aux, int lo, int mid, int hi) {
+	private void merge(Item[] a, Item[] aux, int lo, int mid, int hi) {
 		for (int i = lo; i <= hi; i++) {
 			aux[i] = a[i];
 		}
@@ -25,10 +25,10 @@ public class BottomupMergesort implements Sort {
 	}
 
 	@Override
-	public void sortArray(Comparable[] a) {
+	public void sortArray(Item[] a) {
 		mergeCallCount = 0;
 		int N = a.length;
-		Comparable[] aux = new Comparable[N];
+		Item[] aux = (Item []) new Comparable[N];
 		for(int sz = 1; sz < N; sz = sz + sz){
 			for(int lo = 0; lo < N - sz; lo= lo + sz + sz){
 				merge(a, aux, lo, lo + sz - 1, Math.min(lo + sz + sz - 1, N-1));

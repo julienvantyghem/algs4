@@ -1,10 +1,10 @@
 import java.util.Arrays;
 
-public class TopDownMergesort implements Sort{
+public class TopDownMergesort<Item extends Comparable<Item>> implements Sort<Item>{
 
 	private int mergeCallCount;
 
-	private void merge(Comparable[] a, Comparable[] aux, int lo, int mid,
+	private void merge(Item[] a, Item[] aux, int lo, int mid,
 			int hi) {
 		for (int i = lo; i <= hi; i++) {
 			aux[i] = a[i];
@@ -24,7 +24,7 @@ public class TopDownMergesort implements Sort{
 		System.out.println("Array after "+ ++mergeCallCount + " merges : " + Arrays.toString(a));
 	}
 
-	private void sort(Comparable[] a, Comparable[] aux, int lo, int hi) {
+	private void sort(Item[] a, Item[] aux, int lo, int hi) {
 		if (hi <= lo)
 			return;
 		int mid = lo + (hi - lo) / 2;
@@ -34,9 +34,9 @@ public class TopDownMergesort implements Sort{
 	}
 
 	@Override
-	public void sortArray(Comparable[] a) {
+	public void sortArray(Item[] a) {
 		mergeCallCount = 0;
-		Comparable[] aux = new Comparable[a.length];
+		Item[] aux = (Item[]) new Comparable[a.length];
 		sort(a, aux, 0, a.length - 1);
 	}
 

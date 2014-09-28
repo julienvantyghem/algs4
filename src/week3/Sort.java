@@ -1,6 +1,6 @@
 
-public interface Sort {
+public interface Sort<Item extends Comparable<Item>> {
 	
-	public void sortArray(Comparable[] a);
+	public void sortArray(Item[] a);
 
 }
