@@ -15,8 +15,6 @@ public class Fast {
 
     public static void main(String[] args) {
         Point[] points = readPoints(args[0]);
-        //First sort to handle repeated values correctly; the sort performed afterwards on slope must be stable, otherwise the operation is useless, and the algorithm incorrect!
-        Arrays.sort(points);
         StdDraw.setXscale(0, 32768);
         StdDraw.setYscale(0, 32768);
         for (Point p : points) {
@@ -29,21 +27,13 @@ public class Fast {
             Point p = points[i];
             Arrays.sort(aux, p.SLOPE_ORDER);
             int j = 1;
-            //Skip all values equal to point under study
-            while (p.slopeTo(aux[j]) == Double.NEGATIVE_INFINITY) {
-                j++;
-            }
             while (j < n) {
                 int firstInSeq = j;
-                Point currentPoint = aux[j++];
-                double currentSlope = p.slopeTo(currentPoint);
+                double currentSlope = p.slopeTo(aux[j++]);
                 int sequenceLength = 1;
                 while (j < n && p.slopeTo(aux[j]) == currentSlope) {
-                    Point nextCurrentPoint = aux[j++];
-                    if (currentPoint.compareTo(nextCurrentPoint) != 0) {
-                        sequenceLength++;
-                    }
-                    currentPoint = nextCurrentPoint;
+                    sequenceLength++;
+                    j++;
                 }
                 if (sequenceLength >= 3) {
                     outputAlignedPoints(aux, firstInSeq, sequenceLength);
