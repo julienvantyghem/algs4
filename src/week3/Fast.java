@@ -55,11 +55,13 @@ public class Fast {
     private static void outputAlignedPoints(Point[] pointsSortedBySlope, int first, int sequenceLength) {
         int nAlignedPoints = sequenceLength + 1;
         Point[] alignedPoints = new Point[nAlignedPoints];
-        alignedPoints[0] = pointsSortedBySlope[0];
+        Point originPoint = pointsSortedBySlope[0];
+        alignedPoints[0] = originPoint;
         for (int k = 0; k < sequenceLength; k++) {
             alignedPoints[1 + k] = pointsSortedBySlope[first + k];
         }
         Arrays.sort(alignedPoints);
+        if (originPoint.compareTo(alignedPoints[0]) != 0) return;
         StringBuilder sb = new StringBuilder("" + alignedPoints[0]);
         for (int k = 1; k < nAlignedPoints; k++) {
             sb.append(" -> " + alignedPoints[k]);
