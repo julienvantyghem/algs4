@@ -15,6 +15,8 @@ public class Fast {
 
     public static void main(String[] args) {
         Point[] points = readPoints(args[0]);
+        //First sort to handle repeated values correctly; the sort performed afterwards on slope must be stable, otherwise the operation is useless, and the algorithm incorrect!
+        Arrays.sort(points);
         StdDraw.setXscale(0, 32768);
         StdDraw.setYscale(0, 32768);
         for (Point p : points) {
@@ -23,37 +25,47 @@ public class Fast {
         int n = points.length;
         Point[] aux = new Point[n];
         for (int i = 0; i < n; i++) {
-            Point p = points[i];
             copyArray(points, aux);
-            Arrays.sort(aux, points[i].SLOPE_ORDER);
-            int j = 0;
+            Point p = points[i];
+            Arrays.sort(aux, p.SLOPE_ORDER);
+            int j = 1;
+            //Skip all values equal to point under study
+            while (p.slopeTo(aux[j]) == Double.NEGATIVE_INFINITY) {
+                j++;
+            }
             while (j < n) {
                 int firstInSeq = j;
-                double currentSlope = p.slopeTo(aux[j++]);
+                Point currentPoint = aux[j++];
+                double currentSlope = p.slopeTo(currentPoint);
+                int sequenceLength = 1;
                 while (j < n && p.slopeTo(aux[j]) == currentSlope) {
-                    j++;
+                    Point nextCurrentPoint = aux[j++];
+                    if (currentPoint.compareTo(nextCurrentPoint) != 0) {
+                        sequenceLength++;
+                    }
+                    currentPoint = nextCurrentPoint;
                 }
-                int lastInSeq = j - 1;
-                if (lastInSeq - firstInSeq >= 3) {
-                    outputAlignedPoints(aux, firstInSeq, lastInSeq);
+                if (sequenceLength >= 3) {
+                    outputAlignedPoints(aux, firstInSeq, sequenceLength);
                 }
             }
         }
     }
 
-    private static void outputAlignedPoints(Point[] pointsSortedBySlope, int first, int last) {
-        int sequenceLength = last - first + 1;
-        Point[] alignedPoints = new Point[sequenceLength];
+    private static void outputAlignedPoints(Point[] pointsSortedBySlope, int first, int sequenceLength) {
+        int nAlignedPoints = sequenceLength + 1;
+        Point[] alignedPoints = new Point[nAlignedPoints];
+        alignedPoints[0] = pointsSortedBySlope[0];
         for (int k = 0; k < sequenceLength; k++) {
-            alignedPoints[k] = pointsSortedBySlope[first + k];
+            alignedPoints[1 + k] = pointsSortedBySlope[first + k];
         }
         Arrays.sort(alignedPoints);
         StringBuilder sb = new StringBuilder("" + alignedPoints[0]);
-        for (int k = 1; k < sequenceLength; k++) {
+        for (int k = 1; k < nAlignedPoints; k++) {
             sb.append(" -> " + alignedPoints[k]);
         }
         System.out.println(sb.toString());
-        alignedPoints[0].drawTo(alignedPoints[sequenceLength - 1]);
+        alignedPoints[0].drawTo(alignedPoints[nAlignedPoints - 1]);
     }
 
     private static void copyArray(Point[] src, Point[] dst) {
