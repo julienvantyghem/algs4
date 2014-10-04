@@ -40,6 +40,7 @@ public class Point implements Comparable<Point> {
 
     // slope between this point and that point
     public double slopeTo(Point that) {
+    	if(that == null) throw new NullPointerException("Cannot compute slope to null point");
         if(this.compareTo(that) == 0) return Double.NEGATIVE_INFINITY;
         if(that.x == this.x) return Double.POSITIVE_INFINITY;
         return (that.y - this.y) / (double) (that.x - this.x);
