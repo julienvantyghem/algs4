@@ -44,9 +44,9 @@ public class PointSET {
 		double minDistance = Double.POSITIVE_INFINITY;
 		Point2D nearest = null;
 		for (Point2D current : rbBST.keys()) {
-			double currentDistance = current.distanceTo(current);
-			if (currentDistance < minDistance) {
-				minDistance = currentDistance;
+			double currentSquaredDistance = current.distanceTo(p);
+			if (currentSquaredDistance < minDistance) {
+				minDistance = currentSquaredDistance;
 				nearest = current;
 			}
 		}
